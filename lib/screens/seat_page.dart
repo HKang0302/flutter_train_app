@@ -65,7 +65,7 @@ class _SeatPageState extends State<SeatPage> {
               ],
             ),
             Container(
-              padding: EdgeInsets.all(20),
+              padding: EdgeInsets.only(top: 20, bottom: 10),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -79,13 +79,11 @@ class _SeatPageState extends State<SeatPage> {
                 ],
               ),
             ),
-            Container(
-              padding: EdgeInsets.all(10),
-              child: Text(
-                '선택 인원: ${selectedSeats.length}/${widget.passengerCount.total}명',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              ),
+            Text(
+              '선택 인원: ${selectedSeats.length}/${widget.passengerCount.total}명',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
+            SizedBox(height: 10),
             Expanded(
               child: SingleChildScrollView(
                 child: SizedBox(
