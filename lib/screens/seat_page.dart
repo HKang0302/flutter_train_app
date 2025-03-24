@@ -6,12 +6,14 @@ class SeatPage extends StatefulWidget {
   final String departureStation;
   final String arrivalStation;
   final PassengerCount passengerCount;
+  final VoidCallback onBookingComplete;
 
   const SeatPage({
     super.key,
     required this.departureStation,
     required this.arrivalStation,
     required this.passengerCount,
+    required this.onBookingComplete,
   });
 
   @override
@@ -197,6 +199,7 @@ class _SeatPageState extends State<SeatPage> {
                                 onPressed: () {
                                   Navigator.pop(context); // dialog 닫기
                                   Navigator.pop(context); // seat page 닫기
+                                  widget.onBookingComplete(); // 인원 수 초기화
                                 },
                               ),
                             ],

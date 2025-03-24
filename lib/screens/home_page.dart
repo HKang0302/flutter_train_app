@@ -16,6 +16,17 @@ class _HomePageState extends State<HomePage> {
   String arrivalStation = '';
   final PassengerCount passengerCount = PassengerCount();
 
+  void resetPassengerCount() {
+    setState(() {
+      passengerCount.adult = 1;
+      passengerCount.child = 0;
+      passengerCount.infant = 0;
+      passengerCount.senior = 0;
+      passengerCount.mildDisability = 0;
+      passengerCount.severeDisability = 0;
+    });
+  }
+
   void updatePassengerCount(String type, bool increment) {
     setState(() {
       switch (type) {
@@ -264,6 +275,7 @@ class _HomePageState extends State<HomePage> {
                                 departureStation: departureStation,
                                 arrivalStation: arrivalStation,
                                 passengerCount: passengerCount,
+                                onBookingComplete: resetPassengerCount,
                               ),
                         ),
                       );
