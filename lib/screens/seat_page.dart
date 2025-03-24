@@ -47,7 +47,14 @@ class _SeatPageState extends State<SeatPage> {
             Row(
               children: [
                 StationText(station: widget.departureStation),
-                Icon(Icons.arrow_circle_right_outlined, size: 30),
+                Icon(
+                  Icons.arrow_circle_right_outlined,
+                  size: 30,
+                  color:
+                      Theme.of(context).brightness == Brightness.dark
+                          ? Colors.grey[400]!
+                          : Colors.black,
+                ),
                 StationText(station: widget.arrivalStation),
               ],
             ),
