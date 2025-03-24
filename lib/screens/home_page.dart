@@ -66,27 +66,24 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget passengerSelector(String title, String type, int count) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(title),
-          Row(
-            children: [
-              IconButton(
-                icon: const Icon(Icons.remove_circle_outline),
-                onPressed: () => updatePassengerCount(type, false),
-              ),
-              Text('$count'),
-              IconButton(
-                icon: const Icon(Icons.add_circle_outline),
-                onPressed: () => updatePassengerCount(type, true),
-              ),
-            ],
-          ),
-        ],
-      ),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Text(title),
+        Row(
+          children: [
+            IconButton(
+              icon: const Icon(Icons.remove_circle_outline),
+              onPressed: () => updatePassengerCount(type, false),
+            ),
+            Text('$count'),
+            IconButton(
+              icon: const Icon(Icons.add_circle_outline),
+              onPressed: () => updatePassengerCount(type, true),
+            ),
+          ],
+        ),
+      ],
     );
   }
 
@@ -112,24 +109,9 @@ class _HomePageState extends State<HomePage> {
           child: SizedBox(
             width: double.infinity,
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+              // mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                StationSelectWidget(
-                  departureStation: departureStation,
-                  arrivalStation: arrivalStation,
-                  onDepartureSelected: (station) {
-                    setState(() {
-                      departureStation = station;
-                    });
-                  },
-                  onArrivalSelected: (station) {
-                    setState(() {
-                      arrivalStation = station;
-                    });
-                  },
-                ),
-                const SizedBox(height: 20),
                 SizedBox(
                   width: double.infinity,
                   child: TextButton(
@@ -178,28 +160,72 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
                 const SizedBox(height: 20),
+                StationSelectWidget(
+                  departureStation: departureStation,
+                  arrivalStation: arrivalStation,
+                  onDepartureSelected: (station) {
+                    setState(() {
+                      departureStation = station;
+                    });
+                  },
+                  onArrivalSelected: (station) {
+                    setState(() {
+                      arrivalStation = station;
+                    });
+                  },
+                ),
+                const SizedBox(height: 20),
                 Container(
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(20),
                   ),
-                  child: Column(
-                    children: [
-                      passengerSelector('성인', 'adult', passengerCount.adult),
-                      passengerSelector('어린이', 'child', passengerCount.child),
-                      passengerSelector('유아', 'infant', passengerCount.infant),
-                      passengerSelector('결로', 'senior', passengerCount.senior),
-                      passengerSelector(
-                        '경증장애인',
-                        'mildDisability',
-                        passengerCount.mildDisability,
-                      ),
-                      passengerSelector(
-                        '중증장애인',
-                        'severeDisability',
-                        passengerCount.severeDisability,
-                      ),
-                    ],
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    child: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            passengerSelector(
+                              '성인',
+                              'adult',
+                              passengerCount.adult,
+                            ),
+                            passengerSelector(
+                              '어린이',
+                              'child',
+                              passengerCount.child,
+                            ),
+                            passengerSelector(
+                              '유아',
+                              'infant',
+                              passengerCount.infant,
+                            ),
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            passengerSelector(
+                              '경로',
+                              'senior',
+                              passengerCount.senior,
+                            ),
+                            passengerSelector(
+                              '경증장애인',
+                              'mildDisability',
+                              passengerCount.mildDisability,
+                            ),
+                            passengerSelector(
+                              '중증장애인',
+                              'severeDisability',
+                              passengerCount.severeDisability,
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 ),
                 const SizedBox(height: 20),
