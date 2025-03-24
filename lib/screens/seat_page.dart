@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_train_app/models/passenger_count.dart';
 
 class SeatPage extends StatefulWidget {
   final String departureStation;
   final String arrivalStation;
+  final PassengerCount passengerCount;
 
   const SeatPage({
     super.key,
     required this.departureStation,
     required this.arrivalStation,
+    required this.passengerCount,
   });
 
   @override
@@ -22,8 +25,16 @@ class _SeatPageState extends State<SeatPage> {
     setState(() {
       if (selectedSeats.contains(seat)) {
         selectedSeats.remove(seat);
-      } else {
+      } else if (selectedSeats.length < widget.passengerCount.total) {
         selectedSeats.add(seat);
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('선택 가능한 좌석 수를 초과했습니다.'),
+            backgroundColor: Colors.red,
+            duration: Duration(seconds: 1),
+          ),
+        );
       }
     });
   }
@@ -47,14 +58,7 @@ class _SeatPageState extends State<SeatPage> {
             Row(
               children: [
                 StationText(station: widget.departureStation),
-                Icon(
-                  Icons.arrow_circle_right_outlined,
-                  size: 30,
-                  color:
-                      Theme.of(context).brightness == Brightness.dark
-                          ? Colors.grey[400]!
-                          : Colors.black,
-                ),
+                Icon(Icons.arrow_circle_right_outlined, size: 30),
                 StationText(station: widget.arrivalStation),
               ],
             ),
@@ -71,6 +75,13 @@ class _SeatPageState extends State<SeatPage> {
                   SizedBox(width: 2),
                   Text('선택안됨'),
                 ],
+              ),
+            ),
+            Container(
+              padding: EdgeInsets.all(10),
+              child: Text(
+                '선택 인원: ${selectedSeats.length}/${widget.passengerCount.total}명',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
             ),
             Expanded(
@@ -147,6 +158,18 @@ class _SeatPageState extends State<SeatPage> {
                         const SnackBar(
                           content: Text('선택한 좌석이 없습니다'),
                           duration: Duration(seconds: 1),
+                        ),
+                      );
+                      return;
+                    }
+
+                    if (selectedSeats.length < widget.passengerCount.total) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                            '${widget.passengerCount.total - selectedSeats.length}명 더 추가해주세요',
+                          ),
+                          duration: const Duration(seconds: 1),
                         ),
                       );
                       return;

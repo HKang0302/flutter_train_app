@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_train_app/screens/seat_page.dart';
 import 'package:flutter_train_app/screens/station_list_page.dart';
+import 'package:flutter_train_app/models/passenger_count.dart';
 
 class HomePage extends StatefulWidget {
   final VoidCallback onThemeToggle;
@@ -13,6 +14,81 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   String departureStation = '';
   String arrivalStation = '';
+  final PassengerCount passengerCount = PassengerCount();
+
+  void updatePassengerCount(String type, bool increment) {
+    setState(() {
+      switch (type) {
+        case 'adult':
+          if (increment) {
+            passengerCount.adult++;
+          } else if (passengerCount.adult > 0) {
+            passengerCount.adult--;
+          }
+          break;
+        case 'child':
+          if (increment) {
+            passengerCount.child++;
+          } else if (passengerCount.child > 0) {
+            passengerCount.child--;
+          }
+          break;
+        case 'infant':
+          if (increment) {
+            passengerCount.infant++;
+          } else if (passengerCount.infant > 0) {
+            passengerCount.infant--;
+          }
+          break;
+        case 'senior':
+          if (increment) {
+            passengerCount.senior++;
+          } else if (passengerCount.senior > 0) {
+            passengerCount.senior--;
+          }
+          break;
+        case 'mildDisability':
+          if (increment) {
+            passengerCount.mildDisability++;
+          } else if (passengerCount.mildDisability > 0) {
+            passengerCount.mildDisability--;
+          }
+          break;
+        case 'severeDisability':
+          if (increment) {
+            passengerCount.severeDisability++;
+          } else if (passengerCount.severeDisability > 0) {
+            passengerCount.severeDisability--;
+          }
+          break;
+      }
+    });
+  }
+
+  Widget passengerSelector(String title, String type, int count) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(title),
+          Row(
+            children: [
+              IconButton(
+                icon: const Icon(Icons.remove_circle_outline),
+                onPressed: () => updatePassengerCount(type, false),
+              ),
+              Text('$count'),
+              IconButton(
+                icon: const Icon(Icons.add_circle_outline),
+                onPressed: () => updatePassengerCount(type, true),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -102,6 +178,31 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
                 const SizedBox(height: 20),
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Column(
+                    children: [
+                      passengerSelector('성인', 'adult', passengerCount.adult),
+                      passengerSelector('어린이', 'child', passengerCount.child),
+                      passengerSelector('유아', 'infant', passengerCount.infant),
+                      passengerSelector('결로', 'senior', passengerCount.senior),
+                      passengerSelector(
+                        '경증장애인',
+                        'mildDisability',
+                        passengerCount.mildDisability,
+                      ),
+                      passengerSelector(
+                        '중증장애인',
+                        'severeDisability',
+                        passengerCount.severeDisability,
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 20),
                 SizedBox(
                   width: double.infinity,
                   child: TextButton(
@@ -116,6 +217,16 @@ class _HomePageState extends State<HomePage> {
                         );
                         return;
                       }
+                      if (passengerCount.total == 0) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('인원을 추가해주세요'),
+                            backgroundColor: Colors.red,
+                            duration: Duration(seconds: 1),
+                          ),
+                        );
+                        return;
+                      }
                       Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -123,6 +234,7 @@ class _HomePageState extends State<HomePage> {
                               (context) => SeatPage(
                                 departureStation: departureStation,
                                 arrivalStation: arrivalStation,
+                                passengerCount: passengerCount,
                               ),
                         ),
                       );
