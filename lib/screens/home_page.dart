@@ -44,6 +44,54 @@ class _HomePageState extends State<HomePage> {
                 SizedBox(
                   width: double.infinity,
                   child: TextButton(
+                    onPressed: () {
+                      setState(() {
+                        final temp = departureStation;
+                        departureStation = arrivalStation;
+                        arrivalStation = temp;
+                      });
+                    },
+                    style: ButtonStyle(
+                      fixedSize: WidgetStateProperty.all(
+                        const Size(double.infinity, 50),
+                      ),
+                      side: WidgetStateProperty.all(
+                        BorderSide(color: Colors.purple.withAlpha(139)),
+                      ),
+                      shape: WidgetStateProperty.all(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                      ),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          '출발역',
+                          style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(width: 10),
+                        const Icon(Icons.swap_horiz, size: 24),
+                        const SizedBox(width: 10),
+                        Text(
+                          '도착역',
+                          style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                SizedBox(
+                  width: double.infinity,
+                  child: TextButton(
                     onPressed: () {},
                     style: ButtonStyle(
                       fixedSize: WidgetStateProperty.all(
