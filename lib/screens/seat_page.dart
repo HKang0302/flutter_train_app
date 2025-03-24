@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_train_app/models/passenger_count.dart';
 
+/// 좌석 선택 화면을 구현하는 StatefulWidget
 class SeatPage extends StatefulWidget {
   final String departureStation;
   final String arrivalStation;
@@ -20,6 +21,7 @@ class SeatPage extends StatefulWidget {
   State<SeatPage> createState() => _SeatPageState();
 }
 
+/// SeatPage의 상태를 관리하는 State 클래스
 class _SeatPageState extends State<SeatPage> {
   Set<String> selectedSeats = {};
 
@@ -233,27 +235,21 @@ class _SeatPageState extends State<SeatPage> {
   }
 }
 
-class StationText extends StatelessWidget {
-  final String station;
-  const StationText({super.key, required this.station});
-
-  static const TextStyle stationTextStyle = TextStyle(
-    fontSize: 30,
-    fontWeight: FontWeight.bold,
-    color: Colors.purple,
-  );
+/// 좌석 행을 표시하는 위젯
+class SeatRow extends StatelessWidget {
+  final List<Widget> seatBoxes;
+  const SeatRow({super.key, required this.seatBoxes});
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: SizedBox(
-        height: 40,
-        child: Center(child: Text(station, style: stationTextStyle)),
-      ),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: seatBoxes,
     );
   }
 }
 
+/// 개별 좌석을 표시하는 위젯
 class SeatBox extends StatelessWidget {
   final bool isSelected;
   final bool? isSmallBox;
@@ -278,15 +274,23 @@ class SeatBox extends StatelessWidget {
   }
 }
 
-class SeatRow extends StatelessWidget {
-  final List<Widget> seatBoxes;
-  const SeatRow({super.key, required this.seatBoxes});
+class StationText extends StatelessWidget {
+  final String station;
+  const StationText({super.key, required this.station});
+
+  static const TextStyle stationTextStyle = TextStyle(
+    fontSize: 30,
+    fontWeight: FontWeight.bold,
+    color: Colors.purple,
+  );
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: seatBoxes,
+    return Expanded(
+      child: SizedBox(
+        height: 40,
+        child: Center(child: Text(station, style: stationTextStyle)),
+      ),
     );
   }
 }

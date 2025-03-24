@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_train_app/data/stations.dart';
 
+/// 역 목록 화면을 구현하는 StatelessWidget
 class StationListPage extends StatelessWidget {
   final String title;
   final Function(String) onStationSelected;

@@ -3,6 +3,7 @@ import 'package:flutter_train_app/screens/seat_page.dart';
 import 'package:flutter_train_app/screens/station_list_page.dart';
 import 'package:flutter_train_app/models/passenger_count.dart';
 
+/// 기차 예매 앱의 메인 화면을 구현하는 StatefulWidget
 class HomePage extends StatefulWidget {
   final VoidCallback onThemeToggle;
   const HomePage({super.key, required this.onThemeToggle});
@@ -11,6 +12,7 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
+/// HomePage의 상태를 관리하는 State 클래스
 class _HomePageState extends State<HomePage> {
   String departureStation = '';
   String arrivalStation = '';
@@ -312,9 +314,7 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-/*
- * 출발역과 도착역을 선택하는 위젯
- */
+/// 출발역과 도착역을 선택할 수 있는 위젯
 class StationSelectWidget extends StatelessWidget {
   final String departureStation;
   final String arrivalStation;
@@ -387,6 +387,7 @@ class StationSelectWidget extends StatelessWidget {
   }
 }
 
+/// 역 선택 버튼을 구현하는 위젯
 class StationSelectButton extends StatelessWidget {
   final String title;
   final String stationName;
