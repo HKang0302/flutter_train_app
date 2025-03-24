@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_train_app/screens/seat_page.dart';
 import 'package:flutter_train_app/screens/station_list_page.dart';
 
 class HomePage extends StatefulWidget {
@@ -92,7 +93,28 @@ class _HomePageState extends State<HomePage> {
                 SizedBox(
                   width: double.infinity,
                   child: TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      if (departureStation == '' || arrivalStation == '') {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('출발역과 도착역을 모두 선택해주세요.'),
+                            backgroundColor: Colors.red,
+                            duration: Duration(seconds: 1),
+                          ),
+                        );
+                        return;
+                      }
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder:
+                              (context) => SeatPage(
+                                departureStation: departureStation,
+                                arrivalStation: arrivalStation,
+                              ),
+                        ),
+                      );
+                    },
                     style: ButtonStyle(
                       fixedSize: WidgetStateProperty.all(
                         const Size(double.infinity, 50),

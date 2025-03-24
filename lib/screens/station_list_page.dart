@@ -27,7 +27,7 @@ class StationListPage extends StatelessWidget {
           return Container(
             height: 50,
             decoration: BoxDecoration(
-              border: Border(bottom: BorderSide(color: Colors.grey[400]!)),
+              border: Border(bottom: BorderSide(color: Colors.grey[300]!)),
             ),
             child: ListTile(
               title: Text(
