@@ -177,7 +177,10 @@ class _HomePageState extends State<HomePage> {
                 const SizedBox(height: 20),
                 Container(
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color:
+                        Theme.of(context).brightness == Brightness.dark
+                            ? Colors.grey[800]!
+                            : Colors.white,
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: Padding(
