@@ -235,7 +235,12 @@ class SeatBox extends StatelessWidget {
       height: isSmallBox ?? false ? 24 : 50,
       margin: EdgeInsets.fromLTRB(2, 4, 2, 4),
       decoration: BoxDecoration(
-        color: isSelected ? Colors.purple : Colors.grey[300]!,
+        color:
+            isSelected
+                ? Colors.purple
+                : Theme.of(context).brightness == Brightness.dark
+                ? Colors.grey[600]!
+                : Colors.grey[300]!,
         borderRadius: BorderRadius.circular(8),
       ),
     );

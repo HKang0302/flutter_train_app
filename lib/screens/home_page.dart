@@ -3,7 +3,8 @@ import 'package:flutter_train_app/screens/seat_page.dart';
 import 'package:flutter_train_app/screens/station_list_page.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  final VoidCallback onThemeToggle;
+  const HomePage({super.key, required this.onThemeToggle});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -16,9 +17,20 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('기차 예매')),
+      appBar: AppBar(
+        title: const Text('기차 예매'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.brightness_6),
+            onPressed: widget.onThemeToggle,
+          ),
+        ],
+      ),
       body: Container(
-        color: Colors.grey[200],
+        color:
+            Theme.of(context).brightness == Brightness.dark
+                ? Theme.of(context).scaffoldBackgroundColor
+                : Colors.grey[200],
         child: Padding(
           padding: const EdgeInsets.all(20.0),
           child: SizedBox(
@@ -169,7 +181,10 @@ class StationSelectWidget extends StatelessWidget {
       height: 200,
       alignment: Alignment.center,
       decoration: BoxDecoration(
-        color: Colors.white,
+        color:
+            Theme.of(context).brightness == Brightness.dark
+                ? Colors.grey[800]!
+                : Colors.white,
         borderRadius: BorderRadius.circular(20),
       ),
       child: Row(
