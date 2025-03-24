@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_train_app/screens/station_list_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -28,6 +29,16 @@ class _HomePageState extends State<HomePage> {
                 StationSelectWidget(
                   departureStation: departureStation,
                   arrivalStation: arrivalStation,
+                  onDepartureSelected: (station) {
+                    setState(() {
+                      departureStation = station;
+                    });
+                  },
+                  onArrivalSelected: (station) {
+                    setState(() {
+                      arrivalStation = station;
+                    });
+                  },
                 ),
                 const SizedBox(height: 20),
                 SizedBox(
@@ -70,11 +81,15 @@ class _HomePageState extends State<HomePage> {
 class StationSelectWidget extends StatelessWidget {
   final String departureStation;
   final String arrivalStation;
+  final Function(String) onDepartureSelected;
+  final Function(String) onArrivalSelected;
 
   const StationSelectWidget({
     super.key,
     required this.departureStation,
     required this.arrivalStation,
+    required this.onDepartureSelected,
+    required this.onArrivalSelected,
   });
 
   @override
@@ -95,7 +110,17 @@ class StationSelectWidget extends StatelessWidget {
             title: '출발역',
             stationName: departureStation == '' ? '선택' : departureStation,
             onTap: () {
-              // TODO: 출발역 선택 화면으로 이동
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder:
+                      (context) => StationListPage(
+                        title: '출발역 선택',
+                        onStationSelected: onDepartureSelected,
+                        currentStation: arrivalStation,
+                      ),
+                ),
+              );
             },
           ),
           Container(width: 2, height: 50, color: Colors.grey[400]),
@@ -103,7 +128,17 @@ class StationSelectWidget extends StatelessWidget {
             title: '도착역',
             stationName: arrivalStation == '' ? '선택' : arrivalStation,
             onTap: () {
-              // TODO: 도착역 선택 화면으로 이동
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder:
+                      (context) => StationListPage(
+                        title: '도착역 선택',
+                        onStationSelected: onArrivalSelected,
+                        currentStation: departureStation,
+                      ),
+                ),
+              );
             },
           ),
         ],
