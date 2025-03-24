@@ -24,6 +24,8 @@ class _HomePageState extends State<HomePage> {
       passengerCount.senior = 0;
       passengerCount.mildDisability = 0;
       passengerCount.severeDisability = 0;
+      departureStation = '';
+      arrivalStation = '';
     });
   }
 
