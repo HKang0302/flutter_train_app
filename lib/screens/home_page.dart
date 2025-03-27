@@ -32,52 +32,62 @@ class _HomePageState extends State<HomePage> {
   }
 
   void updatePassengerCount(String type, bool increment) {
-    setState(() {
-      switch (type) {
-        case 'adult':
-          if (increment) {
-            passengerCount.adult++;
-          } else if (passengerCount.adult > 0) {
-            passengerCount.adult--;
-          }
-          break;
-        case 'child':
-          if (increment) {
-            passengerCount.child++;
-          } else if (passengerCount.child > 0) {
-            passengerCount.child--;
-          }
-          break;
-        case 'infant':
-          if (increment) {
-            passengerCount.infant++;
-          } else if (passengerCount.infant > 0) {
-            passengerCount.infant--;
-          }
-          break;
-        case 'senior':
-          if (increment) {
-            passengerCount.senior++;
-          } else if (passengerCount.senior > 0) {
-            passengerCount.senior--;
-          }
-          break;
-        case 'mildDisability':
-          if (increment) {
-            passengerCount.mildDisability++;
-          } else if (passengerCount.mildDisability > 0) {
-            passengerCount.mildDisability--;
-          }
-          break;
-        case 'severeDisability':
-          if (increment) {
-            passengerCount.severeDisability++;
-          } else if (passengerCount.severeDisability > 0) {
-            passengerCount.severeDisability--;
-          }
-          break;
-      }
-    });
+    try {
+      setState(() {
+        switch (type) {
+          case 'adult':
+            if (increment) {
+              passengerCount.adult++;
+            } else if (passengerCount.adult > 0) {
+              passengerCount.adult--;
+            }
+            break;
+          case 'child':
+            if (increment) {
+              passengerCount.child++;
+            } else if (passengerCount.child > 0) {
+              passengerCount.child--;
+            }
+            break;
+          case 'infant':
+            if (increment) {
+              passengerCount.infant++;
+            } else if (passengerCount.infant > 0) {
+              passengerCount.infant--;
+            }
+            break;
+          case 'senior':
+            if (increment) {
+              passengerCount.senior++;
+            } else if (passengerCount.senior > 0) {
+              passengerCount.senior--;
+            }
+            break;
+          case 'mildDisability':
+            if (increment) {
+              passengerCount.mildDisability++;
+            } else if (passengerCount.mildDisability > 0) {
+              passengerCount.mildDisability--;
+            }
+            break;
+          case 'severeDisability':
+            if (increment) {
+              passengerCount.severeDisability++;
+            } else if (passengerCount.severeDisability > 0) {
+              passengerCount.severeDisability--;
+            }
+            break;
+        }
+      });
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('인원 수 업데이트 중 오류가 발생했습니다: $e'),
+          backgroundColor: Colors.red,
+          duration: Duration(seconds: 1),
+        ),
+      );
+    }
   }
 
   Widget passengerSelector(String title, String type, int count) {

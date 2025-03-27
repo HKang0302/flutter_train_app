@@ -26,21 +26,25 @@ class _SeatPageState extends State<SeatPage> {
   Set<String> selectedSeats = {};
 
   void toggleSeat(String seat) {
-    setState(() {
-      if (selectedSeats.contains(seat)) {
-        selectedSeats.remove(seat);
-      } else if (selectedSeats.length < widget.passengerCount.total) {
-        selectedSeats.add(seat);
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('선택 가능한 좌석 수를 초과했습니다.'),
-            backgroundColor: Colors.red,
-            duration: Duration(seconds: 1),
-          ),
-        );
-      }
-    });
+    try {
+      setState(() {
+        if (selectedSeats.contains(seat)) {
+          selectedSeats.remove(seat);
+        } else if (selectedSeats.length < widget.passengerCount.total) {
+          selectedSeats.add(seat);
+        } else {
+          throw '선택 가능한 좌석 수를 초과했습니다.';
+        }
+      });
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('좌석 선택 중 오류가 발생했습니다: $e'),
+          backgroundColor: Colors.red,
+          duration: Duration(seconds: 1),
+        ),
+      );
+    }
   }
 
   Widget seatTextBox(String text) => Container(
@@ -155,56 +159,51 @@ class _SeatPageState extends State<SeatPage> {
                 width: double.infinity,
                 child: TextButton(
                   onPressed: () {
-                    if (selectedSeats.isEmpty) {
+                    try {
+                      if (selectedSeats.isEmpty) {
+                        throw '선택한 좌석이 없습니다';
+                      }
+
+                      if (selectedSeats.length < widget.passengerCount.total) {
+                        throw '${widget.passengerCount.total - selectedSeats.length}명 더 추가해주세요';
+                      }
+
+                      showCupertinoDialog(
+                        context: context,
+                        builder:
+                            (context) => CupertinoAlertDialog(
+                              title: const Text('예매 확인'),
+                              content: Text('좌석: ${selectedSeats.join(', ')}'),
+                              actions: [
+                                CupertinoDialogAction(
+                                  child: const Text(
+                                    '취소',
+                                    style: TextStyle(color: Colors.red),
+                                  ),
+                                  onPressed: () => Navigator.pop(context),
+                                ),
+                                CupertinoDialogAction(
+                                  child: const Text(
+                                    '확인',
+                                    style: TextStyle(color: Colors.blue),
+                                  ),
+                                  onPressed: () {
+                                    Navigator.pop(context); // dialog 닫기
+                                    Navigator.pop(context); // seat page 닫기
+                                    widget.onBookingComplete(); // 인원 수 초기화
+                                  },
+                                ),
+                              ],
+                            ),
+                      );
+                    } catch (e) {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('선택한 좌석이 없습니다'),
+                        SnackBar(
+                          content: Text('예매 중 오류가 발생했습니다: $e'),
                           duration: Duration(seconds: 1),
                         ),
                       );
-                      return;
                     }
-
-                    if (selectedSeats.length < widget.passengerCount.total) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text(
-                            '${widget.passengerCount.total - selectedSeats.length}명 더 추가해주세요',
-                          ),
-                          duration: const Duration(seconds: 1),
-                        ),
-                      );
-                      return;
-                    }
-
-                    showCupertinoDialog(
-                      context: context,
-                      builder:
-                          (context) => CupertinoAlertDialog(
-                            title: const Text('예매 확인'),
-                            content: Text('좌석: ${selectedSeats.join(', ')}'),
-                            actions: [
-                              CupertinoDialogAction(
-                                child: const Text(
-                                  '취소',
-                                  style: TextStyle(color: Colors.red),
-                                ),
-                                onPressed: () => Navigator.pop(context),
-                              ),
-                              CupertinoDialogAction(
-                                child: const Text(
-                                  '확인',
-                                  style: TextStyle(color: Colors.blue),
-                                ),
-                                onPressed: () {
-                                  Navigator.pop(context); // dialog 닫기
-                                  Navigator.pop(context); // seat page 닫기
-                                  widget.onBookingComplete(); // 인원 수 초기화
-                                },
-                              ),
-                            ],
-                          ),
-                    );
                   },
                   style: ButtonStyle(
                     fixedSize: WidgetStateProperty.all(
